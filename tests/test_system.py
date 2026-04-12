@@ -1,4 +1,6 @@
-from src.physics.bodies import Body
+# improve test names 
+
+from src.physics.body import Body
 from src.physics.system import compute_accelerations, compute_total_energy
 import numpy as np
 import pytest

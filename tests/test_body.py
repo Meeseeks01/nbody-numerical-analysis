@@ -1,4 +1,4 @@
-from src.physics.bodies import Body
+from src.physics.body import Body
 import numpy as np
 
 def test_body_mass():

@@ -1,5 +1,5 @@
 """ 
-    bodies.py
+    body.py
 This module defines the Body class, which represents a physical body in the N-body gravitational simulation.
 Each Body has properties such as mass, position, and velocity. The class is designed to be simple and flexible,
 allowing for easy integration with the physics functions defined in system.py. The Body class does not contain any methods for updating its state. 
