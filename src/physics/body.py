@@ -24,7 +24,7 @@ class Body:
         self.name = name
         self.mass = float(mass)
 
-        self.position = np.array(position, dtype=float) #dtype (= data type) Numpy array of floats for position, velocity, and acceleration
+        self.position = np.array(position, dtype=float) 
         assert len(self.position) == 2, "Position must be 2D"
         self.velocity = np.array(velocity, dtype=float)
         assert len(self.velocity) == 2, "Velocity must be 2D"
