@@ -13,5 +13,5 @@ Features
 - unit tests
 
 Run tests
-python -m pytest tests/ -v
+- python -m pytest tests/ -v
 
