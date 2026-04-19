@@ -20,7 +20,8 @@ pip install -r requirements.txt
 
 ## Running Tests
 
-python -m pytest tests/ -v
+Run tests
+- python -m pytest tests/ -v
 
 ## Project Structure
 
