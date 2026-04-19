@@ -25,9 +25,14 @@ class Body:
         self.mass = float(mass)
 
         self.position = np.array(position, dtype=float) 
-        assert len(self.position) == 2, "Position must be 2D"
+        if len(self.position) != 2:
+            # Include actual value in error message for faster debugging
+            raise ValueError( 
+                f"Position must be 2D, got {len(self.position)}D: {position}"
+                )
+         
         self.velocity = np.array(velocity, dtype=float)
-        assert len(self.velocity) == 2, "Velocity must be 2D"
-        
-# Improve assert with an if statement and raise an exception with a clear error message instead of using assert, which can be disabled in optimized mode.
-    
+        if len(self.velocity) != 2:
+            raise ValueError(
+                 f"Velocity must be 2D, got {len(self.velocity)}D: {velocity}"
+                 )

@@ -26,5 +26,5 @@ def test_compute_total_energy():
      
 
 def test_body_position_must_be_2D():
-    with pytest.raises(AssertionError):
+    with pytest.raises(ValueError):
         body = Body(1.0, [1, 0, 0], [0, 1]) 

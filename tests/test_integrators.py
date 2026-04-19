@@ -4,7 +4,7 @@ from src.integrators.leapfrog import leapfrog_integrator
 from src.physics.system import compute_total_energy
 import numpy as np
 
-
+# Test cases for Not Simplectic Integrators: Euler, Runge-Kutta
 def test_euler_integrator_updates_position_without_force():
     body = Body(1.0, [0, 0], [1, 0])
     bodies = [body]
@@ -22,6 +22,7 @@ def test_euler_integrator_keeps_velocity_constant_without_force():
 
     assert np.allclose(bodies[0].velocity, np.array([1.0, 0.0]))
 
+# Test cases for Simplectic Integrators: Leapfrog, Yoshida
 def test_leapfrog_integrator_updates_position_without_force():
     body = Body(1.0, [0, 0], [1, 0])
     bodies = [body]
@@ -72,4 +73,3 @@ def test_leapfrog_outperforms_euler_energy_conservation():
     # Assert that the energy error of the Leapfrog integrator is less than that of the Euler integrator
     assert leapfrog_error < euler_error, f"Leapfrog energy error {leapfrog_error} should be less than Euler energy error {euler_error}"
 
-   
