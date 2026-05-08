@@ -19,7 +19,7 @@ def rk4_integrator(bodies, dt):
     None
         Updates body positions and velocities in place.
     """
-        # Stage 1 - k1
+    # Stage 1 - k1
     k1_accelerations = compute_accelerations(bodies)
 
     # Stage 2 - k2 bodies use k1 velocity and acceleration
