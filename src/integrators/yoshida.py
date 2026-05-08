@@ -1,5 +1,5 @@
-
 from src.physics.system import compute_accelerations
+
 
 def yoshida_integrator(bodies, dt):
     """
