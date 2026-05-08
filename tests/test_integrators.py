@@ -7,19 +7,12 @@ from src.integrators.leapfrog import leapfrog_integrator
 from src.physics.system import compute_total_energy
 from src.integrators.yoshida import yoshida_integrator
 
-
-
+# Fixtures for testing integrators
 @pytest.fixture
 def single_body():
     return Body(1.0, [0, 0], [1, 0])
 
-@pytest.fixture
-def two_bodies():
-    return [
-            Body(1.0, [0, 0], [0, 1]), 
-            Body(1.0, [1, 0], [0, -1])
-        ]
-
+# Using a fixture factory to create independent instances of the two bodies for each test to avoid coupling effects
 @pytest.fixture
 def make_two_bodies():
     def _make():
@@ -29,34 +22,28 @@ def make_two_bodies():
             ]
     return _make
 
-# Test cases for non-symplectic integrators: Euler, Runge-Kutta
-def test_euler_integrator_updates_position_without_force(single_body):
+# Parametrize tests to run for all integrators
+@pytest.mark.parametrize(
+    "integrator",
+    [euler_integrator, leapfrog_integrator, yoshida_integrator],
+)
+def test_integrator_updates_position_without_force(single_body, integrator):
 
-    euler_integrator([single_body], dt=1.0)
-
-    assert np.allclose(single_body.position, np.array([1.0, 0.0]))
-
-
-def test_euler_integrator_keeps_velocity_constant_without_force(single_body):
-
-    euler_integrator([single_body], dt=1.0)
-
-    assert np.allclose(single_body.velocity, np.array([1.0, 0.0]))
-
-
-# Test cases for symplectic integrators: Leapfrog, Yoshida
-def test_leapfrog_integrator_updates_position_without_force(single_body):
-
-    leapfrog_integrator([single_body], dt=1.0)
+    integrator([single_body], dt=1.0)
 
     assert np.allclose(single_body.position, np.array([1.0, 0.0]))
 
 
-def test_leapfrog_integrator_keeps_velocity_constant_without_force(single_body):
+@pytest.mark.parametrize(
+    "integrator",
+    [euler_integrator, leapfrog_integrator, yoshida_integrator],
+)
+def test_integrator_keeps_velocity_constant_without_force(single_body, integrator):
 
-    leapfrog_integrator([single_body], dt=1.0)
+    integrator([single_body], dt=1.0)
 
     assert np.allclose(single_body.velocity, np.array([1.0, 0.0]))
+
 
 
 def test_leapfrog_outperforms_euler_energy_conservation(make_two_bodies):
@@ -89,31 +76,15 @@ def test_leapfrog_outperforms_euler_energy_conservation(make_two_bodies):
         f"should be less than Euler energy error {euler_error} "
     ) 
 
-#---------------------------------------------------------------
-# TEST YOSHIDA INTEGRATOR
-#----------------------------------------------------------------
-def test_yoshida_integrator_updates_position_without_force(single_body):
-
-    yoshida_integrator([single_body], dt=1.0)
-
-    assert np.allclose(single_body.position, np.array([1.0, 0.0]))
 
 
-def test_yoshida_integrator_keeps_velocity_constant_without_force(single_body):
-
-    yoshida_integrator([single_body], dt=1.0)
-
-    assert np.allclose(single_body.velocity, np.array([1.0, 0.0]))
-
-#----------------------------------------------------------------
 # Test comparison of Yoshida integrator against Euler and Leapfrog for energy conservation
-#----------------------------------------------------------------
 def test_yoshida_outperforms_euler_and_leapfrog_energy_conservation(make_two_bodies):
     # Euler bodies
-    euler_bodies = make_two_bodies()  # Create a new instance of the two bodies for Euler to ensure identical initial conditions
+    euler_bodies = make_two_bodies() 
 
     # Leapfrog bodies - identical BUT independent instances to avoid coupling
-    leapfrog_bodies = make_two_bodies()  # Create a new instance of the two bodies for Leapfrog to ensure identical initial conditions
+    leapfrog_bodies = make_two_bodies() 
 
     # Yoshida bodies - identical BUT independent instances to avoid coupling
     yoshida_bodies = make_two_bodies()  # Create a new instance of the two bodies for Yoshida to ensure identical initial conditions
