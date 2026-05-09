@@ -9,15 +9,19 @@ from src.integrators.leapfrog import leapfrog_integrator
 from src.integrators.yoshida import yoshida_integrator
 from src.diagnostics.energy import relative_energy_error
 
+# Circular initial conditions for two-body problem
 def make_two_bodies():
+    v = np.sqrt(0.5)
     return [
-        Body(1.0, [0.0, 0.0], [0.0, 0.1]),
-        Body(1.0, [1.0, 0.0], [0.0, -1.0])
+        Body(1.0, [-0.5, 0.0], [0.0, -v]),
+        Body(1.0, [0.5, 0.0], [0.0, v])
     ]
 
-def run_simulation(integrator, steps=1000, dt=0.01):
+def run_simulation(name, integrator, steps=1000, dt=0.01):
     bodies = make_two_bodies()
     initial_energy = compute_total_energy(bodies)
+    print(f"Integrator: {name}")
+    print(f"Initial Energy: {initial_energy}")
 
     times = []
     energy_errors = []
@@ -27,6 +31,13 @@ def run_simulation(integrator, steps=1000, dt=0.01):
 
         current_energy = compute_total_energy(bodies)
         error = relative_energy_error(initial_energy, current_energy)
+
+        if step<3:
+            print(
+                  f"Step {step}: "
+                  f"Current Energy = {current_energy}, "
+                  f"Relative Error = {error}"
+                  )
 
         times.append(step * dt)
         energy_errors.append(error)
@@ -41,20 +52,23 @@ def main():
         'Yoshida': yoshida_integrator
     }
 
-    # plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(12, 6))
 
     for name, integrator in integrators.items():
-        times, energy_errors = run_simulation(integrator)
+        times, energy_errors = run_simulation(name, integrator)
         plt.plot(times, energy_errors, label=name)
 
-    plt.xlabel('Time')
-    plt.ylabel('Relative Energy Error')
-    plt.title('Energy Drift Comparison Across Integrators')
-    plt.legend()
+    
+    plt.xlabel('Time', fontsize=14)
+    plt.ylabel('Relative Energy Error (log scale)', fontsize=14)
+    plt.title('Energy Drift Comparison Across Integrators', fontsize=16, pad=20)
+    plt.legend(loc='upper left', fontsize=12, frameon=True, shadow=True)
     plt.grid(True)
+    plt.yscale("log")
+    plt.tight_layout()
 
     plt.savefig("dissertation/figures/energy_drift_comparison.png", dpi=300)
     plt.show()
-
+    
 if __name__ == "__main__":    
     main()
