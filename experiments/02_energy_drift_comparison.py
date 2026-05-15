@@ -1,10 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from src.integrators.rk4 import rk4_integrator
 from src.physics.body import Body
 from src.physics.system import compute_total_energy
 from src.integrators.euler import euler_integrator
+from src.integrators.rk4 import rk4_integrator
 from src.integrators.leapfrog import leapfrog_integrator
 from src.integrators.yoshida import yoshida_integrator
 from src.diagnostics.energy import relative_energy_error

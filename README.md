@@ -77,7 +77,8 @@ python -m pytest tests/ -v
 Example:
 
 ```bash
-python -m experiments.01_energy_drift_comparison
+python -m experiments.02_energy_drift_comparison
+python -m experiments.01_two_body_orbit
 ```
 
 Generated figures are stored in:
