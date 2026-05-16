@@ -8,17 +8,11 @@ from src.integrators.rk4 import rk4_integrator
 from src.integrators.leapfrog import leapfrog_integrator
 from src.integrators.yoshida import yoshida_integrator
 from src.diagnostics.energy import relative_energy_error
+from src.utils.initial_conditions import make_two_body_circiular, make_two_body_circular
 
-# Circular initial conditions for two-body problem
-def make_two_bodies():
-    v = np.sqrt(0.5)
-    return [
-        Body(1.0, [-0.5, 0.0], [0.0, -v]),
-        Body(1.0, [0.5, 0.0], [0.0, v])
-    ]
 
 def run_simulation(name, integrator, steps=1000, dt=0.01):
-    bodies = make_two_bodies()
+    bodies = make_two_body_circular()
     initial_energy = compute_total_energy(bodies)
     print(f"Integrator: {name}")
     print(f"Initial Energy: {initial_energy}")

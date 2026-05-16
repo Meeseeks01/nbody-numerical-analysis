@@ -6,19 +6,11 @@ from src.integrators.euler import euler_integrator
 from src.integrators.rk4 import rk4_integrator
 from src.integrators.leapfrog import leapfrog_integrator
 from src.integrators.yoshida import yoshida_integrator
-
-
-def make_two_bodies():
-    """Create a stable equal-mass circular two-body system."""
-    v = np.sqrt(0.5)
-    return [
-        Body(1.0, [-0.5, 0.0], [0.0, -v]),
-        Body(1.0, [0.5, 0.0], [0.0, v]),
-    ]
+from src.utils.initial_conditions import make_two_body_circular
 
 
 def run_simulation(integrator, steps=1000, dt=0.01):
-    bodies = make_two_bodies()
+    bodies = make_two_body_circular()
     positions = []
     
 
