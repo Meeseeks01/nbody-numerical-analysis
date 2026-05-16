@@ -8,7 +8,7 @@ from src.integrators.rk4 import rk4_integrator
 from src.integrators.leapfrog import leapfrog_integrator
 from src.integrators.yoshida import yoshida_integrator
 from src.diagnostics.energy import relative_energy_error
-from src.utils.initial_conditions import make_two_body_circiular, make_two_body_circular
+from src.utils.initial_conditions import make_two_body_circular 
 
 
 def run_simulation(name, integrator, steps=1000, dt=0.01):
