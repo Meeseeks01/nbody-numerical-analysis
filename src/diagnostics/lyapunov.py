@@ -1,23 +1,17 @@
-
 import numpy as np
 from src.physics.body import Body
 
 def bodies_to_state_vector(bodies):
     """
-    Convert a list of Body objects to a state vector for the dynamical system.
-    The state vector will contain the positions and velocities of all bodies in a flattened format.
-
-    Parameters:
-    - bodies: A list of Body objects.
-
-    Returns:
-    - state_vector: A numpy array containing the positions and velocities of all bodies.
+    Convert a list of Body objects to a flat state vector.
     """
     state_vector = []
+
     for body in bodies:
-        state_vector.extend(body.position)
-        state_vector.extend(body.velocity)
-    return np.array(state_vector)
+        state_vector.extend(np.asarray(body.position, dtype=float))
+        state_vector.extend(np.asarray(body.velocity, dtype=float))
+
+    return np.array(state_vector, dtype=float)
 
 def state_vector_to_bodies(state_vector, masses):
     """
@@ -34,15 +28,15 @@ def state_vector_to_bodies(state_vector, masses):
     bodies = []
     num_bodies = len(masses)
     for i in range(num_bodies):
-        position = state_vector[4*i:4*i+2]  # Extract position (2D)
-        velocity = state_vector[4*i+2:4*i+4]  # Extract velocity (2D)
+        position = state_vector[4*i:4*i+2].copy()  # Extract position (2D)
+        velocity = state_vector[4*i+2:4*i+4].copy()  # Extract velocity (2D)
         body = Body(mass=masses[i], position=position, velocity=velocity)
         bodies.append(body)
     return bodies
 
 
 
-def compute_lyapunov_exponent(bodies, integrator, dt, num_steps, epsilon=1e-8, seed=None):
+def compute_lyapunov_exponent(bodies, integrator, dt, num_steps=200000, epsilon=1e-8, seed=None,  renormalization_steps=50):
     """
     Estimate the maximal Lyapunov exponent of an N-body system
     using the Benettin algorithm.
@@ -92,13 +86,14 @@ def compute_lyapunov_exponent(bodies, integrator, dt, num_steps, epsilon=1e-8, s
     lyapunov_sum = 0.0 # To accumulate the logarithm of the growth factors
     valid_steps = 0 # To count the number of valid steps where the perturbation does not collapse to zero
 
-    # Generate a random number generator for reproducibility
     rng = np.random.default_rng(seed)
     perturbation = rng.random(state.shape)
     perturbation = epsilon * perturbation / np.linalg.norm(perturbation)
+    
 
     # Evolve the system and the perturbed copy for a number of steps
-    for _ in range(num_steps):
+    for step in range(1, num_steps + 1):
+        
         normal_bodies = state_vector_to_bodies(state, masses)
         perturbed_bodies = state_vector_to_bodies(state + perturbation, masses)
 
@@ -109,17 +104,21 @@ def compute_lyapunov_exponent(bodies, integrator, dt, num_steps, epsilon=1e-8, s
         next_perturbed_state = bodies_to_state_vector(perturbed_bodies)
 
         next_perturbation = next_perturbed_state - next_state
-        norm = np.linalg.norm(next_perturbation)
-        # If the perturbation has collapsed to zero, we cannot compute the growth factor for this step
-        if norm == 0:
-            continue
-
-        lyapunov_sum += np.log(norm / epsilon)
 
         state = next_state
-        perturbation = epsilon * next_perturbation / norm
+        perturbation = next_perturbation
 
-        valid_steps += 1
+        if step % renormalization_steps == 0:
+            norm = np.linalg.norm(perturbation)
+
+            if norm == 0:
+                continue
+
+            lyapunov_sum += np.log(norm / epsilon)
+
+            perturbation = epsilon * perturbation / norm
+
+            valid_steps += 1
 
     if valid_steps == 0:
             # If no valid steps were taken, we cannot compute the Lyapunov exponent
@@ -127,11 +126,6 @@ def compute_lyapunov_exponent(bodies, integrator, dt, num_steps, epsilon=1e-8, s
                              "Perturbation may have collapsed to zero.")
     
     # Compute the average Lyapunov exponent
-    lyapunov_exponent = lyapunov_sum / (valid_steps * dt)
+    lyapunov_exponent = lyapunov_sum / (valid_steps * renormalization_steps * dt)
     
     return lyapunov_exponent
-
-
-
-
-   

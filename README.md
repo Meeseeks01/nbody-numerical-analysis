@@ -39,9 +39,7 @@ Athens Tech College, City College University of York Europe Campus
 - Yoshida (fourth-order, symplectic)
 
 ### Planned
-
-- Adaptive timestep methods
-- Lyapunov exponent estimation
+- Computational cost
 
 ---
 
@@ -77,6 +75,8 @@ python -m pytest tests/ -v
 Example:
 
 ```bash
+python -m experiments.04_lyapunov_analysis
+python -m experiments.03_timestep_sensitivity
 python -m experiments.02_energy_drift_comparison
 python -m experiments.01_two_body_orbit
 ```
@@ -99,7 +99,6 @@ src/
 
 experiments/         # Reproducible experiment scripts
 tests/               # Unit and integration tests
-notebooks/           # Quarto/Jupyter research notebooks
 app/                 # Streamlit interactive visualization
 dissertation/        # Dissertation assets and generated figures
 ```
@@ -112,7 +111,6 @@ This project compares integrators across several dimensions:
 
 - Numerical stability
 - Long-term energy conservation
-- Computational cost
 - Chaotic trajectory divergence
 - Sensitivity to timestep size
 
@@ -148,7 +146,6 @@ Main libraries used:
 - SciPy
 - PyTest
 - Streamlit
-- Jupyter / Quarto
 
 ---
 

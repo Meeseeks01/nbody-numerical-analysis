@@ -31,5 +31,5 @@ def euler_integrator(bodies, dt):
         body.position += body.velocity * dt  # Update position -> r(t + dt) = r(t) + v(t) * dt
         body.velocity += acceleration * dt  # Update velocity -> v(t + dt) = v(t) + a(t) * dt
        
-#TODO add modified euler method as well for better accuracy and compare results in tests (Heun’s method)
+
     

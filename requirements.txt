@@ -3,5 +3,3 @@ matplotlib
 scipy
 pytest
 streamlit
-jupyter
-quarto
