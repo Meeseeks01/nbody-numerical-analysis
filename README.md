@@ -75,6 +75,7 @@ python -m pytest tests/ -v
 Example:
 
 ```bash
+python -m experiments.05_three_body_chaos
 python -m experiments.04_lyapunov_analysis
 python -m experiments.03_timestep_sensitivity
 python -m experiments.02_energy_drift_comparison
