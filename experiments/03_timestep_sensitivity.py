@@ -76,6 +76,11 @@ def plot_convergence_analysis():
     }
 
     plt.figure(figsize=(11, 7))
+    #---------------------------------------------------------------
+    print("\n" + "=" * 60)
+    print("EXPERIMENT 03: TIMESTEP SENSITIVITY ANALYSIS")
+    print("=" * 60)
+    #---------------------------------------------------------------
 
     for name, (integrator_func, marker, color) in integrators.items():
         errors, flags = timestep_sensitivity(
@@ -99,8 +104,19 @@ def plot_convergence_analysis():
                 np.log10(fit_dt), np.log10(fit_errors), 1
             )
             label_text = f"{name} (Empirical Slope: {slope:.2f})"
+            
+            print(f"Integrator: {name}")
+            print(f"  -> Energy-error slope: {slope:.4f}")
+            print(f"  -> Stable Runs: {len(fit_errors)} / {len(dt_values)}")
+            print("-" * 50)
+            # --------------------------------------------
+            
+            
         else:
             label_text = f"{name} (All Steps Unstable)"
+            
+            
+        
 
         # 1. Plot the stable empirical data points
         plt.loglog(
@@ -138,6 +154,7 @@ def plot_convergence_analysis():
                 linestyle="",
                 label=f"{name} (Diverged)" if f"{name} (Diverged)" not in plt.gca().get_legend_handles_labels()[1] else ""
             )
+    print("=" * 60 + "\n")        
 
     plt.gca().invert_xaxis()
 
@@ -151,7 +168,7 @@ def plot_convergence_analysis():
     )
 
     plt.title(
-        "Empirical Verification of Integrator Convergence Orders",
+        "Energy Error Scaling Across Different Timesteps",
         fontsize=16,
         fontweight="bold",
         pad=20,
@@ -167,7 +184,7 @@ def plot_convergence_analysis():
     plt.legend(loc="upper left", fontsize=10, frameon=True, shadow=True)
     plt.tight_layout()
 
-    plt.savefig("dissertation/figures/integrator_convergence_verification.png", dpi=300)
+    plt.savefig("dissertation/figures/timestep_sensitivity.png", dpi=300)
     plt.show()
 
 

@@ -9,7 +9,7 @@ from src.integrators.yoshida import yoshida_integrator
 from src.utils.initial_conditions import pythagorean_three_bodies
 
 
-def generate_trajectories(integrator_func, dt, num_steps):
+def generate_trajectories(integrator_func, dt, num_steps, name):
     """
     Evolve the Pythagorean three-body problem using a specific integrator
     and record the full spatial history of all bodies.
@@ -19,11 +19,15 @@ def generate_trajectories(integrator_func, dt, num_steps):
 
     # Initialize history arrays: shape (num_bodies, num_steps + 1, 2) for 2D (x, y)
     history = np.zeros((num_bodies, num_steps + 1, 2))
+    
+    termination_status = "COMPLETED"
+    failure_step = num_steps
 
     # Record initial conditions (t = 0)
     for b_idx in range(num_bodies):
         history[b_idx, 0, 0] = bodies[b_idx].position[0]
         history[b_idx, 0, 1] = bodies[b_idx].position[1]
+    
 
     # Time-stepping loop
     for step in range(1, num_steps + 1):
@@ -38,14 +42,26 @@ def generate_trajectories(integrator_func, dt, num_steps):
         except (ValueError, OverflowError, FloatingPointError):
             # If an explicit method experiences a numerical explosion,
             # fill the remaining steps with NaN so Matplotlib stops plotting gracefully
+            termination_status = "FAILED"
+            failure_step = step - 1 if step > 1 else 0
             history[:, step:, :] = np.nan
             break
+        
+    print(f"Integrator: {name}")
+    print(f"Status: {termination_status}")
+    print(f"Steps Completed: {failure_step} / {num_steps}")
+    
+    for b_idx in range(num_bodies):
+        fx = history[b_idx, failure_step if termination_status == "FAILED" else -1, 0]
+        fy = history[b_idx, failure_step if termination_status == "FAILED" else -1, 1]
+        print(f"Body {b_idx+1} Final Position: ({fx:.4f}, {fy:.4f})")
+        print("-" * 50)
 
     return history
 
 
 def execute_three_body_chaos_experiment():
-    print("Starting Experiment 05: Three-Body Chaos Trajectory Visualization...")
+    print("Running Experiment 05: Three-Body Chaos Trajectory Visualization...")
 
     # Define strict parameters to preserve close encounter integrity
     dt = 0.001
@@ -76,11 +92,11 @@ def execute_three_body_chaos_experiment():
     init_positions = [b.position for b in initial_bodies]
 
     for idx, (name, int_func) in enumerate(integrators.items()):
-        print(f"  > Simulating trajectory using {name}...")
+        print(f"Simulating trajectory using {name}...")
         ax = axs_flat[idx]
 
         # Compute trajectories
-        history = generate_trajectories(int_func, dt, num_steps)
+        history = generate_trajectories(int_func, dt, num_steps, name)
 
         # Plot the continuous path of each body
         for b_idx in range(len(initial_bodies)):
@@ -123,7 +139,7 @@ def execute_three_body_chaos_experiment():
         ax.grid(True, which="both", linestyle=":", alpha=0.5)
         ax.set_aspect("equal", adjustable="box")
 
-        # Explicitly mark axes bounds to make Euler's fragmentation obvious if it exits bounds
+        # Fixed axis ranges for consistent comparison
         ax.set_xlim(-5, 5) 
         ax.set_ylim(-5, 5)
 
@@ -134,7 +150,7 @@ def execute_three_body_chaos_experiment():
     
     total_simulated_time = dt * num_steps
     plt.suptitle(
-        f"Visualizing Divergence in Chaotic Phase Space:\nThe Pythagorean Three-Body Problem ($T={total_simulated_time}$)",
+        f"Three-Body Trajectory Comparison Across Integrators ($T={total_simulated_time}$)",
         fontsize=16,
         fontweight="bold",
         y=0.96,
@@ -151,13 +167,13 @@ def execute_three_body_chaos_experiment():
 
     plt.tight_layout(rect=[0.02, 0.02, 0.85, 0.92])
 
-    # Ensure targeted directory trees are preserved before disk-write
+    # Created output directory if needed
     output_dir = "dissertation/figures"
     os.makedirs(output_dir, exist_ok=True)
     save_path = os.path.join(output_dir, "three_body_chaos_trajectories.png")
 
     plt.savefig(save_path, dpi=300)
-    print(f"Success! Master comparative figure saved directly to: {save_path}")
+    print(f"Figure saved to: {save_path}")
     plt.show()
 
 

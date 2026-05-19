@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from src.physics.body import Body
 from src.integrators.euler import euler_integrator
 from src.integrators.rk4 import rk4_integrator
 from src.integrators.leapfrog import leapfrog_integrator
@@ -12,7 +11,6 @@ from src.utils.initial_conditions import make_two_body_circular
 def run_simulation(integrator, steps=1000, dt=0.01):
     bodies = make_two_body_circular()
     positions = []
-    
 
     for _ in range(steps):
         positions.append([body.position.copy() for body in bodies])
@@ -32,6 +30,11 @@ def main():
     fig, axes = plt.subplots(2, 2, figsize=(10, 10), sharex=True, sharey=True)
     axes = axes.flatten()
 
+    # Plot results for each integrator
+    print("=" * 60)
+    print("Experiment_01: Two-Body Orbit Simulation")
+    print("=" * 60)
+
     for ax, (name, integrator) in zip(axes, integrators.items()):
         positions = run_simulation(integrator)
 
@@ -40,6 +43,18 @@ def main():
 
         body2_x = positions[:, 1, 0]
         body2_y = positions[:, 1, 1]
+
+        # ------------------------------------------------------------------
+        r_initial = np.sqrt(body1_x[0] ** 2 + body1_y[0] ** 2)
+        r_final = np.sqrt(body1_x[-1] ** 2 + body1_y[-1] ** 2)
+        radial_deviation = np.abs(r_final - r_initial)
+
+        print(f"Integrator: {name}")
+        print(f"Initial Orbital Radius: {r_initial:.6f}")
+        print(f"Final Orbital Radius:   {r_final:.6f}")
+        print(f"Radial Deviation:   {radial_deviation:.8e}")
+        print("-" * 50)
+        # ------------------------------------------------------------------
 
         ax.plot(body1_x, body1_y, label="Body 1")
         ax.plot(body2_x, body2_y, label="Body 2")
@@ -52,6 +67,11 @@ def main():
         ax.set_ylim(-0.8, 0.8)
         ax.grid(True)
         ax.legend()
+
+        #
+        # ------------------------------------------------------------------
+        print("=" * 60 + "\n")
+        # ------------------------------------------------------------------
 
     fig.suptitle("Two-Body Orbit Comparison Across Integrators")
     plt.tight_layout()

@@ -1,0 +1,169 @@
+============================================================
+Experiment_01: Two-Body Orbit Simulation
+============================================================
+Integrator: Euler
+  Initial Orbital Radius: 0.500000
+  Final Orbital Radius:   0.666060
+  Radial Deviation:   1.66060367e-01
+--------------------------------------------------
+============================================================
+
+Integrator: Leapfrog
+  Initial Orbital Radius: 0.500000
+  Final Orbital Radius:   0.500025
+  Radial Deviation:   2.47647908e-05
+--------------------------------------------------
+============================================================
+
+Integrator: RK4
+  Initial Orbital Radius: 0.500000
+  Final Orbital Radius:   0.500000
+  Radial Deviation:   4.14720980e-10
+--------------------------------------------------
+============================================================
+
+Integrator: Yoshida
+  Initial Orbital Radius: 0.500000
+  Final Orbital Radius:   0.500000
+  Radial Deviation:   7.18133542e-09
+--------------------------------------------------
+============================================================
+
+
+============================================================
+EXPERIMENT 02: ENERGY DRIFT ANALYSIS
+============================================================
+Integrator: Euler
+Initial Energy: -0.4999999999999999
+Step 0: Current Energy = -0.4998000149975005, Relative Error = 0.0003999700049988065
+Step 1: Current Energy = -0.49960007998000466, Relative Error = 0.0007998400399904517
+Step 2: Current Energy = -0.49940019496049903, Relative Error = 0.001199610079001712
+Integrator: Euler
+  -> Energy Error Slope: 2.23110137e-02
+--------------------------------------------------
+============================================================
+
+Integrator: RK4
+Initial Energy: -0.4999999999999999
+Step 0: Current Energy = -0.5000000000001111, Relative Error = 2.2248869413488142e-13
+Step 1: Current Energy = -0.5000000000002223, Relative Error = 4.447553436648378e-13
+Step 2: Current Energy = -0.5000000000003333, Relative Error = 6.667999485898691e-13
+Integrator: RK4
+  -> Energy Error Slope: 2.22230445e-11
+--------------------------------------------------
+============================================================
+
+Integrator: Leapfrog
+Initial Energy: -0.4999999999999999
+Step 0: Current Energy = -0.4999999999997499, Relative Error = 4.999334279887081e-13
+Step 1: Current Energy = -0.49999999999899974, Relative Error = 2.000288823467145e-12
+Step 2: Current Energy = -0.49999999999774986, Relative Error = 4.500066985713148e-12
+Integrator: Leapfrog
+  -> Energy Error Slope: -1.83212400e-10
+--------------------------------------------------
+============================================================
+
+Integrator: Yoshida
+Initial Energy: -0.4999999999999999
+Step 0: Current Energy = -0.5000000000000002, Relative Error = 6.661338147750941e-16
+Step 1: Current Energy = -0.5, Relative Error = 2.2204460492503136e-16
+Step 2: Current Energy = -0.5, Relative Error = 2.2204460492503136e-16
+Integrator: Yoshida
+  -> Energy Error Slope: 8.90703869e-16
+--------------------------------------------------
+============================================================
+
+
+============================================================
+EXPERIMENT 03: TIMESTEP SENSITIVITY ANALYSIS
+============================================================
+Integrator: Euler
+  -> Energy-error slope: 0.9579
+  -> Stable Runs: 6 / 10
+--------------------------------------------------
+Integrator: Leapfrog
+  -> Energy-error slope: 2.9254
+  -> Stable Runs: 10 / 10
+--------------------------------------------------
+Integrator: RK4
+  -> Energy-error slope: 2.4785
+  -> Stable Runs: 10 / 10
+--------------------------------------------------
+Integrator: Yoshida
+  -> Energy-error slope: -0.4399
+  -> Stable Runs: 10 / 10
+--------------------------------------------------
+============================================================
+
+Running Experiment 04: Lyapunov Analysis
+  > Running Euler on Stable 2-Body (Circular)...
+  > Running Leapfrog on Stable 2-Body (Circular)...
+  > Running RK4 on Stable 2-Body (Circular)...
+  > Running Yoshida on Stable 2-Body (Circular)...
+  > Running Euler on Chaotic 3-Body (Pythagorean)...
+  > Running Leapfrog on Chaotic 3-Body (Pythagorean)...
+  > Running RK4 on Chaotic 3-Body (Pythagorean)...
+  > Running Yoshida on Chaotic 3-Body (Pythagorean)...
+
+============================================================
+EXPERIMENT 04: MAXIMAL LYAPUNOV EXPONENT DATA LOG
+============================================================
+Configuration: Stable 2-Body (Circular)
+Integrator: Euler      | lambda = 0.006698
+Integrator: Leapfrog   | lambda = 0.007477
+Integrator: RK4        | lambda = 0.007477
+Integrator: Yoshida    | lambda = 0.007477
+--------------------------------------------------
+Configuration: Chaotic 3-Body (Pythagorean)
+Integrator: Euler      | lambda = 0.011404
+Integrator: Leapfrog   | lambda = 0.018882
+Integrator: RK4        | lambda = 0.014473
+Integrator: Yoshida    | lambda = 0.017331
+--------------------------------------------------
+============================================================
+
+Figure saved to: dissertation/figures\lyapunov_exponent_comparison.png
+
+
+Running Experiment 05: Three-Body Chaos Trajectory Visualization...
+Simulating trajectory using Explicit Euler...
+Integrator: Explicit Euler
+Status: COMPLETED
+Steps Completed: 2000 / 2000
+Body 1 Final Position: (14.2223, -4.0560)
+--------------------------------------------------
+Body 2 Final Position: (-9.4425, 2.9788)
+--------------------------------------------------
+Body 3 Final Position: (0.4207, 1.6505)
+--------------------------------------------------
+Simulating trajectory using Leapfrog (2nd-Order Symplectic)...
+Integrator: Leapfrog (2nd-Order Symplectic)
+Status: COMPLETED
+Steps Completed: 2000 / 2000
+Body 1 Final Position: (5.2069, 4.1551)
+--------------------------------------------------
+Body 2 Final Position: (-1.9792, -2.4850)
+--------------------------------------------------
+Body 3 Final Position: (-0.1408, 1.0949)
+--------------------------------------------------
+Simulating trajectory using Runge-Kutta (RK4)...
+Integrator: Runge-Kutta (RK4)
+Status: COMPLETED
+Steps Completed: 2000 / 2000
+Body 1 Final Position: (17.9248, -2.0572)
+--------------------------------------------------
+Body 2 Final Position: (-12.0258, 1.9149)
+--------------------------------------------------
+Body 3 Final Position: (0.2658, 1.3024)
+--------------------------------------------------
+Simulating trajectory using Yoshida (4th-Order Symplectic)...
+Integrator: Yoshida (4th-Order Symplectic)
+Status: COMPLETED
+Steps Completed: 2000 / 2000
+Body 1 Final Position: (16.7039, -15.5853)
+--------------------------------------------------
+Body 2 Final Position: (-16.6560, 7.8611)
+--------------------------------------------------
+Body 3 Final Position: (4.7025, 4.6624)
+--------------------------------------------------
+Figure saved to: dissertation/figures\three_body_chaos_trajectories.png
