@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🌌 Gravitational N-Body Numerical Analysis
+# 🪐 Gravitational N-Body Numerical Analysis
 
 **A project exploring how the choice of numerical integration affects the accuracy and stability of gravity simulations.**
 
