@@ -223,6 +223,10 @@ The Streamlit app lets you run and compare simulations directly in your browser 
 - **Read the energy error plot** — log-scale chart showing how much energy each method gains or loses over time
 - **Switch to the Lyapunov tab** — view precomputed chaos measurements for both system types
 
+![App Lyapunov tab](dissertation/Streamlit_screenshots/app_screenshot_3.png)
+
+The Lyapunov tab shows a bar chart comparing the estimated chaos score (λ) for each solver across two setups: the stable two-body orbit and the chaotic three-body problem. Higher bars mean the solver detected more chaos. Because these calculations are slow to run live, the results are precomputed — run `python -m experiments.04_lyapunov_analysis` first to generate them.
+
 ### Run the tests
 
 ```bash
