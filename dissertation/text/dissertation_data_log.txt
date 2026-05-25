@@ -2,30 +2,30 @@
 Experiment_01: Two-Body Orbit Simulation
 ============================================================
 Integrator: Euler
-  Initial Orbital Radius: 0.500000
-  Final Orbital Radius:   0.666060
-  Radial Deviation:   1.66060367e-01
+Initial Orbital Radius: 0.500000
+Final Orbital Radius:   0.666060
+Radial Deviation:   1.66060367e-01
 --------------------------------------------------
 ============================================================
 
 Integrator: Leapfrog
-  Initial Orbital Radius: 0.500000
-  Final Orbital Radius:   0.500025
-  Radial Deviation:   2.47647908e-05
+Initial Orbital Radius: 0.500000
+Final Orbital Radius:   0.500025
+Radial Deviation:   2.47647908e-05
 --------------------------------------------------
 ============================================================
 
 Integrator: RK4
-  Initial Orbital Radius: 0.500000
-  Final Orbital Radius:   0.500000
-  Radial Deviation:   4.14720980e-10
+Initial Orbital Radius: 0.500000
+Final Orbital Radius:   0.500000
+Radial Deviation:   4.14720980e-10
 --------------------------------------------------
 ============================================================
 
 Integrator: Yoshida
-  Initial Orbital Radius: 0.500000
-  Final Orbital Radius:   0.500000
-  Radial Deviation:   7.18133542e-09
+Initial Orbital Radius: 0.500000
+Final Orbital Radius:   0.500000
+Radial Deviation:   7.18133542e-09
 --------------------------------------------------
 ============================================================
 
@@ -35,44 +35,45 @@ EXPERIMENT 02: ENERGY DRIFT ANALYSIS
 ============================================================
 Integrator: Euler
 Initial Energy: -0.4999999999999999
-Step 0: Current Energy = -0.4998000149975005, Relative Error = 0.0003999700049988065
-Step 1: Current Energy = -0.49960007998000466, Relative Error = 0.0007998400399904517
-Step 2: Current Energy = -0.49940019496049903, Relative Error = 0.001199610079001712
-Integrator: Euler
-  -> Energy Error Slope: 2.23110137e-02
---------------------------------------------------
-============================================================
+  Step 0: Current Energy = -0.4998000149975005, Relative Error = 3.99970005e-04
+  Step 1: Current Energy = -0.4996000799800047, Relative Error = 7.99840040e-04
+  Step 2: Current Energy = -0.4994001949604990, Relative Error = 1.19961008e-03
 
+[Analysis: Euler]
+ Energy Drift Slope: 2.23110137e-02
+--------------------------------------------------
 Integrator: RK4
 Initial Energy: -0.4999999999999999
-Step 0: Current Energy = -0.5000000000001111, Relative Error = 2.2248869413488142e-13
-Step 1: Current Energy = -0.5000000000002223, Relative Error = 4.447553436648378e-13
-Step 2: Current Energy = -0.5000000000003333, Relative Error = 6.667999485898691e-13
-Integrator: RK4
-  -> Energy Error Slope: 2.22230445e-11
---------------------------------------------------
-============================================================
+  Step 0: Current Energy = -0.5000000000001111, Relative Error = 2.22488694e-13
+  Step 1: Current Energy = -0.5000000000002223, Relative Error = 4.44755344e-13
+  Step 2: Current Energy = -0.5000000000003333, Relative Error = 6.66799949e-13
 
+[Analysis: RK4]
+ Energy Drift Slope: 2.22230445e-11
+--------------------------------------------------
 Integrator: Leapfrog
 Initial Energy: -0.4999999999999999
-Step 0: Current Energy = -0.4999999999997499, Relative Error = 4.999334279887081e-13
-Step 1: Current Energy = -0.49999999999899974, Relative Error = 2.000288823467145e-12
-Step 2: Current Energy = -0.49999999999774986, Relative Error = 4.500066985713148e-12
-Integrator: Leapfrog
-  -> Energy Error Slope: -1.83212400e-10
---------------------------------------------------
-============================================================
+  Step 0: Current Energy = -0.4999999999997499, Relative Error = 4.99933428e-13
+  Step 1: Current Energy = -0.4999999999989997, Relative Error = 2.00028882e-12
+  Step 2: Current Energy = -0.4999999999977499, Relative Error = 4.50006699e-12
 
+[Analysis: Leapfrog]
+ Maximum Bound Energy Error: 9.99699112e-09
+  Mean Energy Error: 4.64819252e-09 (� 3.51465862e-09)
+--------------------------------------------------
 Integrator: Yoshida
 Initial Energy: -0.4999999999999999
-Step 0: Current Energy = -0.5000000000000002, Relative Error = 6.661338147750941e-16
-Step 1: Current Energy = -0.5, Relative Error = 2.2204460492503136e-16
-Step 2: Current Energy = -0.5, Relative Error = 2.2204460492503136e-16
-Integrator: Yoshida
-  -> Energy Error Slope: 8.90703869e-16
+  Step 0: Current Energy = -0.5000000000000002, Relative Error = 6.66133815e-16
+  Step 1: Current Energy = -0.5000000000000000, Relative Error = 2.22044605e-16
+  Step 2: Current Energy = -0.5000000000000000, Relative Error = 2.22044605e-16
+
+[Analysis: Yoshida]
+ Maximum Bound Energy Error: 1.06581410e-14
+  Mean Energy Error: 3.56892293e-15 (� 3.14528100e-15)
 --------------------------------------------------
 ============================================================
 
+Figure saved to: dissertation/figures\energy_drift_comparison.png
 
 ============================================================
 EXPERIMENT 03: TIMESTEP SENSITIVITY ANALYSIS
@@ -122,10 +123,8 @@ Integrator: Yoshida    | lambda = 0.017331
 --------------------------------------------------
 ============================================================
 
-Figure saved to: dissertation/figures\lyapunov_exponent_comparison.png
 
-
-Running Experiment 05: Three-Body Chaos Trajectory Visualization...
+EXPERIMENT 05: THREE-BODY CHAOS TRAJECTORY COMPARISON
 Simulating trajectory using Explicit Euler...
 Integrator: Explicit Euler
 Status: COMPLETED
@@ -166,4 +165,4 @@ Body 2 Final Position: (-16.6560, 7.8611)
 --------------------------------------------------
 Body 3 Final Position: (4.7025, 4.6624)
 --------------------------------------------------
-Figure saved to: dissertation/figures\three_body_chaos_trajectories.png
+

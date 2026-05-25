@@ -1,155 +1,241 @@
-# N-Body Numerical Analysis
+<div align="center">
 
-A computational study investigating how numerical integrator choice affects
-the quantitative onset of chaos in gravitational N-body systems.
+# 🌌 Gravitational N-Body Numerical Analysis
 
-The project evaluates both symplectic and non-symplectic integrators using
-diagnostics such as energy drift and Lyapunov exponent estimation.
+**A project exploring how the choice of numerical solver affects the accuracy and stability of gravity simulations.**
 
-Bachelor's Thesis — Computer Science  
-Athens Tech College, City College University of York Europe Campus
+[![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![NumPy](https://img.shields.io/badge/NumPy-Scientific%20Computing-013243?style=flat-square&logo=numpy)](https://numpy.org)
+[![Streamlit](https://img.shields.io/badge/Streamlit-Interactive%20UI-FF4B4B?style=flat-square&logo=streamlit&logoColor=white)](https://streamlit.io)
+[![pytest](https://img.shields.io/badge/pytest-Tested-0A9EDC?style=flat-square&logo=pytest&logoColor=white)](https://pytest.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 
----
+*Undergraduate Computer Science Dissertation · Scientific Computing & Numerical Analysis*
 
-## Research Question
-
-> How does integrator choice affect the quantitative onset of chaos in
-> gravitational N-body systems?
+</div>
 
 ---
 
-## Features
+## What is this?
 
-- Gravitational N-body simulation engine
-- Multiple numerical integrators
-- Energy conservation diagnostics
-- Long-term orbital stability analysis
-- Experimental comparison framework
-- Streamlit-based interactive visualization (planned)
+This project simulates how objects move under gravity — like planets orbiting a star — and tests four different methods for calculating those movements step by step. The main question is: **does the method you choose matter, and if so, how much?**
 
----
+The short answer is: a lot. Some methods slowly leak energy into the simulation and cause orbits to spiral outward. Others keep energy stable for millions of steps. The experiments here show exactly where each method succeeds and fails.
 
-## Integrators
+### Results Summary
 
-### Implemented
+| Method | Order | Keeps energy stable? | Orbit error | Energy drift | Stable runs |
+|---|:---:|:---:|:---:|:---:|:---:|
+| **Euler** | 1st | ✗ | `1.66 × 10⁻¹` | `2.23 × 10⁻²` | 6/10 |
+| **Leapfrog** | 2nd | ✓ | `2.48 × 10⁻⁵` | bounded `9.99 × 10⁻⁹` | 10/10 |
+| **RK4** | 4th | ✗ | `4.15 × 10⁻¹⁰` | `2.22 × 10⁻¹¹` | 10/10 |
+| **Yoshida** | 4th | ✓ | `7.18 × 10⁻⁹` | bounded `1.07 × 10⁻¹⁴` | 10/10 |
 
-- Euler (first-order, non-symplectic)
-- Leapfrog / Störmer-Verlet (second-order, symplectic)
-- RK4 (fourth-order, non-symplectic)
-- Yoshida (fourth-order, symplectic)
-
-### Planned
-- Computational cost
+> **Key takeaway:** Yoshida keeps energy error near the absolute limit of what a computer can represent (~10⁻¹⁵). That's about 13 orders of magnitude better than Euler. RK4 is very precise in the short term but slowly drifts over time, making it less suitable for extremely long-term energy-conserving simulations.
 
 ---
 
-## Installation
+## Experiments & Results
 
-Clone the repository:
+### Experiment 01 — Do the orbits stay circular?
 
-```bash
-git clone https://github.com/Meeseeks01/nbody-numerical-analysis.git
-cd nbody-numerical-analysis
-```
+Two objects orbit each other. After many steps, do their paths close back into a circle, or do they drift?
 
-Install dependencies:
+![Two-Body Orbit Comparison](dissertation/figures/two_body_orbit.png)
 
-```bash
-pip install -r requirements.txt
-```
+Euler's orbit visibly spirals outward — the simulation is adding energy that shouldn't be there. The other three methods produce clean closed circles.
 
 ---
 
-## Running Tests
+### Experiment 02 — How much does energy change over time?
 
-Run the complete test suite:
+A good simulation should keep the total energy of the system constant. This experiment tracks how much energy is gained or lost.
 
-```bash
-python -m pytest tests/ -v
-```
+![Energy Drift Comparison](dissertation/figures/energy_drift_comparison.png)
+
+- **Euler** drifts steadily upward — the error just keeps growing
+- **RK4** drifts too, but much more slowly
+- **Leapfrog** bounces up and down but stays within a fixed range — it never runs away
+- **Yoshida** stays almost perfectly flat, right at the noise floor of floating-point arithmetic
 
 ---
 
-## Running Experiments
+### Experiment 03 — What happens when you use smaller time steps?
 
-Example:
+A smaller time step means more calculations per second of simulated time. Reducing the timestep should improve numerical accuracy, but the extent of that improvement depends on the integrator.
 
-```bash
-python -m experiments.05_three_body_chaos
-python -m experiments.04_lyapunov_analysis
-python -m experiments.03_timestep_sensitivity
-python -m experiments.02_energy_drift_comparison
-python -m experiments.01_two_body_orbit
-```
+![Timestep Sensitivity](dissertation/figures/timestep_sensitivity.png)
 
-Generated figures are stored in:
+The experiment confirmed the expected convergence behaviour of the integrators as the timestep was reduced.
 
-```text
-dissertation/figures/
-```
+- Euler showed the largest sensitivity to timestep size, with numerical error decreasing slowly as Δt became smaller.
+- Leapfrog demonstrated significantly improved stability and error reduction due to its second-order symplectic formulation.
+- RK4 achieved extremely small short-term errors before approaching floating-point precision limits.
+- Yoshida rapidly reached the machine-precision noise floor (~10⁻¹⁵), where further timestep reduction no longer produced meaningful accuracy improvements.
+
+The experiment also demonstrates a practical limitation of high-order integrators: once truncation error falls below floating-point roundoff error, reducing the timestep further no longer improves simulation accuracy.
+
+---
+
+### Experiment 04 — Can the methods detect chaos?
+
+Chaotic systems are ones where tiny differences in starting position grow into completely different outcomes. This experiment checks whether each method correctly identifies chaotic vs. stable systems.
+
+![Lyapunov Exponent Comparison](dissertation/figures/lyapunov_exponent_comparison.png)
+
+| Setup | Euler | Leapfrog | RK4 | Yoshida |
+|---|:---:|:---:|:---:|:---:|
+| Stable 2-body | 0.007 | 0.007 | 0.007 | 0.007 |
+| Chaotic 3-body | 0.011 | **0.019** | 0.015 | 0.017 |
+
+All four methods correctly show higher chaos in the three-body case. Euler gives a lower reading because it dampens the simulation — it makes things look *less* chaotic than they really are.
+
+---
+
+### Experiment 05 — Three bodies in chaos
+
+Three objects with masses 3, 4, and 5 are placed at the corners of a right triangle and released. This is a well-known chaotic setup with no stable solution.
+
+![Three-Body Chaos](dissertation/figures/three_body_chaos_trajectories.png)
+
+After just 2 simulated time units, all four methods predict completely different positions. This isn't a flaw, it's the nature of chaos! Even tiny rounding differences get amplified until the results diverge entirely.
 
 ---
 
 ## Project Structure
 
-```text
-src/
-├── physics/         # Body class and gravitational system mechanics
-├── integrators/     # Numerical integration algorithms
-├── diagnostics/     # Energy drift and chaos diagnostics
-
-experiments/         # Reproducible experiment scripts
-tests/               # Unit and integration tests
-app/                 # Streamlit interactive visualization
-dissertation/        # Dissertation assets and generated figures
+```
+nbody-numerical-analysis/
+│
+├── src/
+│   ├── physics/
+│   │   ├── body.py              # Stores position, velocity, and mass for each object
+│   │   └── system.py            # Calculates gravitational pull between all pairs of objects
+│   │
+│   ├── integrators/
+│   │   ├── euler.py             # Euler      — simple but unstable
+│   │   ├── leapfrog.py          # Leapfrog   — stable, good for long runs
+│   │   ├── rk4.py               # RK4        — very accurate but for short-term runs
+│   │   └── yoshida.py           # Yoshida    — best long-term energy conservation
+│   │
+│   ├── diagnostics/
+│   │   ├── energy.py            # Tracks how much energy is gained or lost
+│   │   └── lyapunov.py          # Measures how quickly nearby paths diverge
+│   │
+│   └── utils/
+│       └── initial_conditions.py  # Sets up the starting positions and speeds
+│
+├── experiments/                 # The five numbered experiments
+├── tests/                       # Automated tests (pytest)
+├── app/
+│   └── streamlit_app.py         # Interactive browser interface
+│
+└── dissertation/
+    ├── figures/                 # All plots generated by the experiments
+    └── text/                    # Full terminal output logs
 ```
 
 ---
 
-## Numerical Methods
+## The Four Methods
 
-This project compares integrators across several dimensions:
+### Euler
+The most basic approach. Each step, move the object based on its current speed, then update the speed based on the current gravitational pull.
 
-- Numerical stability
-- Long-term energy conservation
-- Chaotic trajectory divergence
-- Sensitivity to timestep size
+```
+new position = position + velocity × Δt
+new velocity = velocity + acceleration × Δt
+```
 
-Special focus is given to the distinction between:
+Fast to compute, but adds energy to the simulation over time. Only useful as a teaching example.
 
-- Symplectic integrators
-- Non-symplectic integrators
+### Leapfrog
+A smarter version that updates position and velocity at slightly offset times, which cancels out much of the error.
 
-and their suitability for long-term gravitational simulations.
+```
+half-step velocity = velocity + acceleration × Δt/2
+new position       = position + half-step velocity × Δt
+new velocity       = half-step velocity + new acceleration × Δt/2
+```
 
----
+Energy stays within a fixed range forever. A solid choice for long simulations.
 
-## Current Experiments
+### Runge-Kutta 4 (RK4)
+Takes four sample points within each time step to get a much more accurate estimate of where the object should end up.
 
-- Energy drift comparison across integrators
-- Long-term orbital stability analysis
-- Timestep sensitivity experiments
+Very accurate in the short term, but energy slowly drifts over long runs. Good when you need precision over a short window.
 
-Planned:
+### Yoshida
+A more advanced version of Leapfrog that uses seven internal stages per step to reach the same accuracy level as RK4, while still keeping energy perfectly stable.
 
-- Lyapunov exponent estimation
-- Chaotic three-body simulations
-- Interactive simulation controls
-
----
-
-## Dependencies
-
-Main libraries used:
-
-- NumPy
-- Matplotlib
-- SciPy
-- PyTest
-- Streamlit
+One of the strongest choices for long-term Hamiltonian simulations. Reference: Yoshida, H. (1990). *Physics Letters A.*
 
 ---
 
-## License
+## Installation
 
-This project is developed for academic and research purposes.
+```bash
+git clone https://github.com/yourusername/nbody-numerical-analysis.git
+cd nbody-numerical-analysis
+pip install -r requirements.txt
+```
+
+**Requires:** `numpy`, `matplotlib`, `scipy`, `pytest`, `streamlit`
+
+---
+
+## Running the Code
+
+### Run an experiment
+
+```bash
+python -m experiments.01_two_body_orbit
+python -m experiments.02_energy_drift_comparison
+python -m experiments.03_timestep_sensitivity
+python -m experiments.04_lyapunov_analysis
+python -m experiments.05_three_body_chaos
+```
+
+Plots are saved to `dissertation/figures/`.
+
+### Open the interactive app
+
+```bash
+python -m streamlit run app/streamlit_app.py
+```
+
+Lets you pick a method, adjust the time step, and watch orbits evolve in real time.
+
+### Run the tests
+
+```bash
+pytest tests/ -v
+```
+
+---
+
+## Key Concepts
+
+| Term | Plain explanation |
+|---|---|
+| **Symplectic integrator** | A method that keeps the total energy of the simulation stable over time, rather than letting it drift |
+| **Energy drift** | When a simulation slowly gains or loses energy it shouldn't — a sign the method is introducing errors |
+| **Timestep** | How much simulated time passes per calculation. Smaller = more accurate but slower |
+| **Lyapunov exponent** | A number that measures how chaotic a system is — how fast two nearly identical starting points lead to different outcomes |
+| **Chaos** | When tiny differences in starting conditions grow into completely different results |
+| **Floating-point precision** | Computers can only store numbers to about 15 decimal places, which sets a hard floor on how accurate any simulation can be |
+
+---
+
+## Technologies
+
+`Python 3.9+` · `NumPy` · `Matplotlib` · `SciPy` · `Streamlit` · `pytest`
+
+---
+
+<div align="center">
+
+*Computer Science Undergraduate Dissertation*  
+*Scientific Computing · Numerical Simulation · Computational Physics*
+
+</div>

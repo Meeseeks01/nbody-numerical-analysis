@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -11,10 +12,12 @@ from src.utils.initial_conditions import make_two_body_circular
 
 
 def run_simulation(name, integrator, steps=1000, dt=0.01):
+
     bodies = make_two_body_circular()
     initial_energy = compute_total_energy(bodies)
+
     print(f"Integrator: {name}")
-    print(f"Initial Energy: {initial_energy}")
+    print(f"Initial Energy: {initial_energy:.16f}")
 
     times = []
     energy_errors = []
@@ -27,15 +30,15 @@ def run_simulation(name, integrator, steps=1000, dt=0.01):
 
         if step < 3:
             print(
-                f"Step {step}: "
-                f"Current Energy = {current_energy}, "
-                f"Relative Error = {error}"
+                f"  Step {step}: "
+                f"Current Energy = {current_energy:.16f}, "
+                f"Relative Error = {error:.8e}"
             )
 
         times.append(step * dt)
         energy_errors.append(error)
 
-    return times, energy_errors
+    return np.array(times), np.array(energy_errors)
 
 
 def main():
@@ -54,30 +57,46 @@ def main():
 
     for name, integrator in integrators.items():
         times, energy_errors = run_simulation(name, integrator)
-        plt.plot(times, energy_errors, label=name)
+        plt.plot(times, energy_errors, label=name, linewidth=1.5)
 
-    # --------------------------------------------------------
-        time_axis = np.array(times)
-        errors_array = np.array(energy_errors)
+        print(f"\n[Analysis: {name}]")
 
-        slope, _ = np.polyfit(time_axis, errors_array, 1)
+        # Use metrics appropriate to each integrator type
+        if name in ["Euler", "RK4"]:
 
-        print(f"Integrator: {name}")
-        print(f"Energy Error Slope: {slope:.8e}")
+            # Secular drift: Linear fit is appropriate on raw data to find drift rate
+            slope, _ = np.polyfit(times, energy_errors, 1)
+            print(f" Energy Drift Slope: {slope:.8e}")
+
+        else:
+            # Symplectic: Bounded variance and maximum amplitude are the true metrics
+            max_error = np.max(energy_errors)
+            mean_error = np.mean(energy_errors)
+            std_error = np.std(energy_errors)
+
+            print(f" Maximum Bound Energy Error: {max_error:.8e}")
+            print(f"  Mean Energy Error: {mean_error:.8e} (± {std_error:.8e})")
+
         print("-" * 50)
 
-        print("=" * 60 + "\n")
-    # --------------------------------------------------------
+    print("=" * 60 + "\n")
 
-    plt.xlabel("Time", fontsize=14)
-    plt.ylabel("Relative Energy Error (log scale)", fontsize=14)
-    plt.title("Energy Drift Comparison Across Integrators", fontsize=16, pad=20)
-    plt.legend(loc="upper left", fontsize=12, frameon=True, shadow=True)
-    plt.grid(True)
+    # Plot Styling modifications for Academic Publication
+    plt.xlabel("Time (dimensionless)", fontsize=12)
+    plt.ylabel("Relative Energy Error (log scale)", fontsize=12)
+    plt.title("Energy Drift Comparison Across Integrators", fontsize=14, pad=20)
+    plt.legend(loc="upper left", fontsize=11, frameon=True, shadow=True)
+    plt.grid(True, which="both", linestyle="--", alpha=0.5)
     plt.yscale("log")
     plt.tight_layout()
 
-    plt.savefig("dissertation/figures/energy_drift_comparison.png", dpi=300)
+    # Robust path generation
+    output_dir = "dissertation/figures"
+    os.makedirs(output_dir, exist_ok=True)
+    output_path = os.path.join(output_dir, "energy_drift_comparison.png")
+
+    plt.savefig(output_path, dpi=300)
+    print(f"Figure saved to: {output_path}")
     plt.show()
 
 

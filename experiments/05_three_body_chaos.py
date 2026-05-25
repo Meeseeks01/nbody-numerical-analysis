@@ -61,7 +61,7 @@ def generate_trajectories(integrator_func, dt, num_steps, name):
 
 
 def execute_three_body_chaos_experiment():
-    print("Running Experiment 05: Three-Body Chaos Trajectory Visualization...")
+    print("EXPERIMENT 05: THREE-BODY CHAOS TRAJECTORY COMPARISON")
 
     # Define strict parameters to preserve close encounter integrity
     dt = 0.001
