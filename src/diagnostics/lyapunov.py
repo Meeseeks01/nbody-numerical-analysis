@@ -1,6 +1,7 @@
 import numpy as np
 from src.physics.body import Body
 
+
 def bodies_to_state_vector(bodies):
     """
     Convert a list of Body objects to a flat state vector.
@@ -12,6 +13,7 @@ def bodies_to_state_vector(bodies):
         state_vector.extend(np.asarray(body.velocity, dtype=float))
 
     return np.array(state_vector, dtype=float)
+
 
 def state_vector_to_bodies(state_vector, masses):
     """
@@ -28,15 +30,22 @@ def state_vector_to_bodies(state_vector, masses):
     bodies = []
     num_bodies = len(masses)
     for i in range(num_bodies):
-        position = state_vector[4*i:4*i+2].copy()  # Extract position (2D)
-        velocity = state_vector[4*i+2:4*i+4].copy()  # Extract velocity (2D)
+        position = state_vector[4 * i : 4 * i + 2].copy()  # Extract position (2D)
+        velocity = state_vector[4 * i + 2 : 4 * i + 4].copy()  # Extract velocity (2D)
         body = Body(mass=masses[i], position=position, velocity=velocity)
         bodies.append(body)
     return bodies
 
 
-
-def compute_lyapunov_exponent(bodies, integrator, dt, num_steps=200000, epsilon=1e-8, seed=None,  renormalization_steps=50):
+def compute_lyapunov_exponent(
+    bodies,
+    integrator,
+    dt,
+    num_steps=200000,
+    epsilon=1e-8,
+    seed=None,
+    renormalization_steps=50,
+):
     """
     Estimate the maximal Lyapunov exponent of an N-body system
     using the Benettin algorithm.
@@ -77,23 +86,21 @@ def compute_lyapunov_exponent(bodies, integrator, dt, num_steps=200000, epsilon=
     ValueError
     If no valid perturbation growth steps are obtained.
     """
-  
 
     # Initialize variables
     masses = [body.mass for body in bodies]
     state = bodies_to_state_vector(bodies)
 
-    lyapunov_sum = 0.0 # To accumulate the logarithm of the growth factors
-    valid_steps = 0 # To count the number of valid steps where the perturbation does not collapse to zero
+    lyapunov_sum = 0.0  # To accumulate the logarithm of the growth factors
+    valid_steps = 0  # To count the number of valid steps where the perturbation does not collapse to zero
 
     rng = np.random.default_rng(seed)
     perturbation = rng.random(state.shape)
     perturbation = epsilon * perturbation / np.linalg.norm(perturbation)
-    
 
     # Evolve the system and the perturbed copy for a number of steps
     for step in range(1, num_steps + 1):
-        
+
         normal_bodies = state_vector_to_bodies(state, masses)
         perturbed_bodies = state_vector_to_bodies(state + perturbation, masses)
 
@@ -121,11 +128,13 @@ def compute_lyapunov_exponent(bodies, integrator, dt, num_steps=200000, epsilon=
             valid_steps += 1
 
     if valid_steps == 0:
-            # If no valid steps were taken, we cannot compute the Lyapunov exponent
-            raise ValueError("No valid steps taken during Lyapunov exponent computation. " \
-                             "Perturbation may have collapsed to zero.")
-    
+        # If no valid steps were taken, we cannot compute the Lyapunov exponent
+        raise ValueError(
+            "No valid steps taken during Lyapunov exponent computation. "
+            "Perturbation may have collapsed to zero."
+        )
+
     # Compute the average Lyapunov exponent
     lyapunov_exponent = lyapunov_sum / (valid_steps * renormalization_steps * dt)
-    
+
     return lyapunov_exponent

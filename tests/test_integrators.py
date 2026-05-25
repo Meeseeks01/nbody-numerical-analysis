@@ -7,20 +7,21 @@ from src.integrators.leapfrog import leapfrog_integrator
 from src.physics.system import compute_total_energy
 from src.integrators.yoshida import yoshida_integrator
 
+
 # Fixtures for testing integrators
 @pytest.fixture
 def single_body():
     return Body(1.0, [0, 0], [1, 0])
 
+
 # Using a fixture factory to create independent instances of the two bodies for each test to avoid coupling effects
 @pytest.fixture
 def make_two_bodies():
     def _make():
-        return [
-                Body(1.0, [0, 0], [0, 1]), 
-                Body(1.0, [1, 0], [0, -1])
-            ]
+        return [Body(1.0, [0, 0], [0, 1]), Body(1.0, [1, 0], [0, -1])]
+
     return _make
+
 
 # Parametrize tests to run for all integrators
 @pytest.mark.parametrize(
@@ -45,13 +46,16 @@ def test_integrator_keeps_velocity_constant_without_force(single_body, integrato
     assert np.allclose(single_body.velocity, np.array([1.0, 0.0]))
 
 
-
 def test_leapfrog_outperforms_euler_energy_conservation(make_two_bodies):
     # Euler bodies
-    euler_bodies = make_two_bodies()  # Create a new instance of the two bodies for Euler to ensure identical initial conditions
+    euler_bodies = (
+        make_two_bodies()
+    )  # Create a new instance of the two bodies for Euler to ensure identical initial conditions
 
     # Leapfrog bodies - identical BUT independent instances to avoid coupling
-    leapfrog_bodies = make_two_bodies()  # Create a new instance of the two bodies for Leapfrog to ensure identical initial conditions
+    leapfrog_bodies = (
+        make_two_bodies()
+    )  # Create a new instance of the two bodies for Leapfrog to ensure identical initial conditions
 
     # Compute initial energies for both systems before simulation to have a baseline for comparison
     initial_energy_euler = compute_total_energy(euler_bodies)
@@ -74,20 +78,21 @@ def test_leapfrog_outperforms_euler_energy_conservation(make_two_bodies):
     assert leapfrog_error < euler_error, (
         f"Leapfrog energy error {leapfrog_error} "
         f"should be less than Euler energy error {euler_error} "
-    ) 
-
+    )
 
 
 # Test comparison of Yoshida integrator against Euler and Leapfrog for energy conservation
 def test_yoshida_outperforms_euler_and_leapfrog_energy_conservation(make_two_bodies):
     # Euler bodies
-    euler_bodies = make_two_bodies() 
+    euler_bodies = make_two_bodies()
 
     # Leapfrog bodies - identical BUT independent instances to avoid coupling
-    leapfrog_bodies = make_two_bodies() 
+    leapfrog_bodies = make_two_bodies()
 
     # Yoshida bodies - identical BUT independent instances to avoid coupling
-    yoshida_bodies = make_two_bodies()  # Create a new instance of the two bodies for Yoshida to ensure identical initial conditions
+    yoshida_bodies = (
+        make_two_bodies()
+    )  # Create a new instance of the two bodies for Yoshida to ensure identical initial conditions
 
     # Compute initial energies for all systems before simulation to have a baseline for comparison
     initial_energy_euler = compute_total_energy(euler_bodies)
@@ -123,6 +128,4 @@ def test_yoshida_outperforms_euler_and_leapfrog_energy_conservation(make_two_bod
     assert yoshida_error < leapfrog_error, (
         f"Yoshida energy error {yoshida_error} "
         f"should be less than Leapfrog energy error {leapfrog_error} "
-    ) 
-
-
+    )

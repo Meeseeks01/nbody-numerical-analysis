@@ -1,5 +1,6 @@
 from src.physics.system import compute_accelerations
-from src.physics.body  import Body
+from src.physics.body import Body
+
 
 def rk4_integrator(bodies, dt):
     """
@@ -53,5 +54,9 @@ def rk4_integrator(bodies, dt):
         a3 = k3_accelerations[i]
         a4 = k4_accelerations[i]
 
-        body.position += (body.velocity + 2 * (k2_bodies[i].velocity + k3_bodies[i].velocity) + k4_bodies[i].velocity) * (dt / 6)
+        body.position += (
+            body.velocity
+            + 2 * (k2_bodies[i].velocity + k3_bodies[i].velocity)
+            + k4_bodies[i].velocity
+        ) * (dt / 6)
         body.velocity += (a1 + 2 * (a2 + a3) + a4) * (dt / 6)

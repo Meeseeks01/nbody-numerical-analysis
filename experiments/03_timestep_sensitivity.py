@@ -76,11 +76,11 @@ def plot_convergence_analysis():
     }
 
     plt.figure(figsize=(11, 7))
-    #---------------------------------------------------------------
+    # ---------------------------------------------------------------
     print("\n" + "=" * 60)
     print("EXPERIMENT 03: TIMESTEP SENSITIVITY ANALYSIS")
     print("=" * 60)
-    #---------------------------------------------------------------
+    # ---------------------------------------------------------------
 
     for name, (integrator_func, marker, color) in integrators.items():
         errors, flags = timestep_sensitivity(
@@ -100,23 +100,17 @@ def plot_convergence_analysis():
 
         # Calculate Empirical Slope strictly over the stable, non-diverged data
         if len(fit_errors) > 1:
-            slope, intercept = np.polyfit(
-                np.log10(fit_dt), np.log10(fit_errors), 1
-            )
+            slope, intercept = np.polyfit(np.log10(fit_dt), np.log10(fit_errors), 1)
             label_text = f"{name} (Empirical Slope: {slope:.2f})"
-            
+
             print(f"Integrator: {name}")
             print(f"  -> Energy-error slope: {slope:.4f}")
             print(f"  -> Stable Runs: {len(fit_errors)} / {len(dt_values)}")
             print("-" * 50)
             # --------------------------------------------
-            
-            
+
         else:
             label_text = f"{name} (All Steps Unstable)"
-            
-            
-        
 
         # 1. Plot the stable empirical data points
         plt.loglog(
@@ -152,19 +146,24 @@ def plot_convergence_analysis():
                 markersize=10,
                 markeredgewidth=2,
                 linestyle="",
-                label=f"{name} (Diverged)" if f"{name} (Diverged)" not in plt.gca().get_legend_handles_labels()[1] else ""
+                label=(
+                    f"{name} (Diverged)"
+                    if f"{name} (Diverged)"
+                    not in plt.gca().get_legend_handles_labels()[1]
+                    else ""
+                ),
             )
-    print("=" * 60 + "\n")        
+    print("=" * 60 + "\n")
 
     plt.gca().invert_xaxis()
 
     # Visual threshold line to give context to the divergence points
     plt.axhline(
-        y=0.1, 
-        color="grey", 
-        linestyle=":", 
-        alpha=0.7, 
-        label="Instability Threshold (0.1)"
+        y=0.1,
+        color="grey",
+        linestyle=":",
+        alpha=0.7,
+        label="Instability Threshold (0.1)",
     )
 
     plt.title(

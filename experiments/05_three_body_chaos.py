@@ -19,7 +19,7 @@ def generate_trajectories(integrator_func, dt, num_steps, name):
 
     # Initialize history arrays: shape (num_bodies, num_steps + 1, 2) for 2D (x, y)
     history = np.zeros((num_bodies, num_steps + 1, 2))
-    
+
     termination_status = "COMPLETED"
     failure_step = num_steps
 
@@ -27,7 +27,6 @@ def generate_trajectories(integrator_func, dt, num_steps, name):
     for b_idx in range(num_bodies):
         history[b_idx, 0, 0] = bodies[b_idx].position[0]
         history[b_idx, 0, 1] = bodies[b_idx].position[1]
-    
 
     # Time-stepping loop
     for step in range(1, num_steps + 1):
@@ -46,11 +45,11 @@ def generate_trajectories(integrator_func, dt, num_steps, name):
             failure_step = step - 1 if step > 1 else 0
             history[:, step:, :] = np.nan
             break
-        
+
     print(f"Integrator: {name}")
     print(f"Status: {termination_status}")
     print(f"Steps Completed: {failure_step} / {num_steps}")
-    
+
     for b_idx in range(num_bodies):
         fx = history[b_idx, failure_step if termination_status == "FAILED" else -1, 0]
         fy = history[b_idx, failure_step if termination_status == "FAILED" else -1, 1]
@@ -65,7 +64,7 @@ def execute_three_body_chaos_experiment():
 
     # Define strict parameters to preserve close encounter integrity
     dt = 0.001
-    num_steps = 2000 
+    num_steps = 2000
 
     integrators = {
         "Explicit Euler": euler_integrator,
@@ -106,7 +105,9 @@ def execute_three_body_chaos_experiment():
                 color=body_colors[b_idx],
                 linewidth=1.5,
                 alpha=0.85,
-                label=body_labels[b_idx] if idx == 0 else "",  # Label only first to avoid legend duplication
+                label=(
+                    body_labels[b_idx] if idx == 0 else ""
+                ),  # Label only first to avoid legend duplication
             )
 
             # Mark initial position with an open circle
@@ -140,14 +141,14 @@ def execute_three_body_chaos_experiment():
         ax.set_aspect("equal", adjustable="box")
 
         # Fixed axis ranges for consistent comparison
-        ax.set_xlim(-5, 5) 
+        ax.set_xlim(-5, 5)
         ax.set_ylim(-5, 5)
 
     # Set outer bounding labels across shared grids
     for i in range(2):
         axs[1, i].set_xlabel("Spatial Coordinate $x$", fontsize=12, labelpad=10)
         axs[i, 0].set_ylabel("Spatial Coordinate $y$", fontsize=12, labelpad=10)
-    
+
     total_simulated_time = dt * num_steps
     plt.suptitle(
         f"Three-Body Trajectory Comparison Across Integrators ($T={total_simulated_time}$)",
