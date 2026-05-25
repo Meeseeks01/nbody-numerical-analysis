@@ -2,7 +2,7 @@
 
 # 🌌 Gravitational N-Body Numerical Analysis
 
-**A project exploring how the choice of numerical solver affects the accuracy and stability of gravity simulations.**
+**A project exploring how the choice of numerical integration affects the accuracy and stability of gravity simulations.**
 
 [![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
 [![NumPy](https://img.shields.io/badge/NumPy-Scientific%20Computing-013243?style=flat-square&logo=numpy)](https://numpy.org)
@@ -16,7 +16,7 @@
 
 ---
 
-## What is this?
+## What is this project about?
 
 This project simulates how objects move under gravity — like planets orbiting a star — and tests four different methods for calculating those movements step by step. The main question is: **does the method you choose matter, and if so, how much?**
 
