@@ -18,9 +18,11 @@
 
 ## What is this project about?
 
-This project simulates how objects move under gravity — like planets orbiting a star — and tests four different methods for calculating those movements step by step. The main question is: **does the method you choose matter, and if so, how much?**
+This project simulates how objects move under gravity — like planets orbiting a star — and tests four different methods for calculating those movements step by step. The main question is: **does the numerical method you choose matter, and if so, how much?**
 
-The short answer is: a lot. Some methods slowly leak energy into the simulation and cause orbits to spiral outward. Others keep energy stable for millions of steps. The experiments here show exactly where each method succeeds and fails.
+The short answer is: a lot. Some methods slowly leak energy into the simulation and cause orbits to spiral outward. Others preserve stable orbital behaviour over long simulation intervals. The experiments here show exactly where each method succeeds and fails.
+
+All results can also be explored through a [Streamlit web app](#interactive-app) — pick a solver, drag a slider, and watch orbits and energy errors update live in your browser. No code needed.
 
 ### Results Summary
 
@@ -43,7 +45,7 @@ Two objects orbit each other. After many steps, do their paths close back into a
 
 ![Two-Body Orbit Comparison](dissertation/figures/two_body_orbit.png)
 
-Euler's orbit visibly spirals outward — the simulation is adding energy that shouldn't be there. The other three methods produce clean closed circles.
+Euler’s orbit visibly spirals outward due to accumulated numerical energy error. The other three methods produce clean closed circles.
 
 ---
 
@@ -166,7 +168,7 @@ Takes four sample points within each time step to get a much more accurate estim
 Very accurate in the short term, but energy slowly drifts over long runs. Good when you need precision over a short window.
 
 ### Yoshida
-A more advanced version of Leapfrog that uses seven internal stages per step to reach the same accuracy level as RK4, while still keeping energy perfectly stable.
+A more advanced version of Leapfrog that uses seven internal stages per step to reach the same accuracy level as RK4, while still keeping long-term energy error tightly bounded.
 
 One of the strongest choices for long-term Hamiltonian simulations. Reference: Yoshida, H. (1990). *Physics Letters A.*
 
@@ -206,6 +208,32 @@ python -m streamlit run app/streamlit_app.py
 
 ---
 
+## Tests
+
+### Run the tests
+
+```bash
+pytest tests/ -v
+```
+
+The test suite covers all four layers of the project — physics, integration, diagnostics, and data validation.
+
+**`test_body.py`** — checks that a `Body` object stores its mass, position, and velocity correctly when created.
+
+**`test_system.py`** — validates the gravitational physics. Confirms that two bodies pull toward each other in the right directions, that the total force on the system is zero (Newton's third law), and that a bound system has negative total energy. Also checks that passing a 3D position raises an error, since the simulation is 2D only.
+
+**`test_integrators.py`** — tests each solver's correctness and relative performance:
+- A single body with no gravitational neighbours should move in a straight line — position and velocity are checked after one step.
+- After 1000 steps, Leapfrog must conserve energy better than Euler.
+- After 1000 steps, Yoshida must conserve energy better than both Euler and Leapfrog.
+
+**`test_diagnostics.py`** — checks the analysis tools:
+- `relative_energy_error` returns the correct fraction (e.g. 10 → 11 gives 0.1).
+- The Lyapunov exponent for a stable two-body system comes back below 0.5, confirming the estimator doesn't flag stable orbits as chaotic.
+
+---
+
+
 ## Interactive App
 
 The Streamlit app lets you run and compare simulations directly in your browser — no code needed.
@@ -227,11 +255,6 @@ The Streamlit app lets you run and compare simulations directly in your browser 
 
 The Lyapunov tab shows a bar chart comparing the estimated chaos score (λ) for each solver across two setups: the stable two-body orbit and the chaotic three-body problem. Higher bars mean the solver detected more chaos. Because these calculations are slow to run live, the results are precomputed — run `python -m experiments.04_lyapunov_analysis` first to generate them.
 
-### Run the tests
-
-```bash
-pytest tests/ -v
-```
 
 ---
 
