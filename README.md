@@ -204,7 +204,24 @@ Plots are saved to `dissertation/figures/`.
 python -m streamlit run app/streamlit_app.py
 ```
 
-Lets you pick a method, adjust the time step, and watch orbits evolve in real time.
+---
+
+## Interactive App
+
+The Streamlit app lets you run and compare simulations directly in your browser — no code needed.
+
+![App overview](app_screenshot_1.png)
+![App simulation view](app_screenshot_2.png)
+
+**What you can do:**
+
+- **Pick a system** — choose between a stable two-body circular orbit or the chaotic Pythagorean three-body problem
+- **Select solvers** — tick any combination of Euler, Leapfrog, RK4, and Yoshida to run side by side
+- **Adjust the timestep** — drag the `dt` slider from 0.0005 to 0.05 and watch how accuracy changes
+- **Change the number of steps** — control how long the simulation runs (100 to 5000 steps)
+- **Read the orbit plot** — see whether paths close into circles or spiral outward
+- **Read the energy error plot** — log-scale chart showing how much energy each method gains or loses over time
+- **Switch to the Lyapunov tab** — view precomputed chaos measurements for both system types
 
 ### Run the tests
 
