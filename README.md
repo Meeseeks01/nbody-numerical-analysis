@@ -210,8 +210,8 @@ python -m streamlit run app/streamlit_app.py
 
 The Streamlit app lets you run and compare simulations directly in your browser — no code needed.
 
-![App overview](app_screenshot_1.png)
-![App simulation view](app_screenshot_2.png)
+![App overview](dissertation/Streamlit_screenshots/app_screenshot_1.png)
+![App simulation view](dissertation/Streamlit_screenshots/app_screenshot_2.png)
 
 **What you can do:**
 
