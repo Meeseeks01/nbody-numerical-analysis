@@ -59,7 +59,7 @@ Initial Energy: -0.4999999999999999
 
 [Analysis: Leapfrog]
  Maximum Bound Energy Error: 9.99699112e-09
-  Mean Energy Error: 4.64819252e-09 (� 3.51465862e-09)
+  Mean Energy Error: 4.64819252e-09 (+/- 3.51465862e-09)
 --------------------------------------------------
 Integrator: Yoshida
 Initial Energy: -0.4999999999999999
@@ -69,7 +69,7 @@ Initial Energy: -0.4999999999999999
 
 [Analysis: Yoshida]
  Maximum Bound Energy Error: 1.06581410e-14
-  Mean Energy Error: 3.56892293e-15 (� 3.14528100e-15)
+  Mean Energy Error: 3.56892293e-15 (+/- 3.14528100e-15)
 --------------------------------------------------
 ============================================================
 
