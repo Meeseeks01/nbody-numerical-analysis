@@ -75,7 +75,7 @@ def main():
             std_error = np.std(energy_errors)
 
             print(f" Maximum Bound Energy Error: {max_error:.8e}")
-            print(f"  Mean Energy Error: {mean_error:.8e} (± {std_error:.8e})")
+            print(f"  Mean Energy Error: {mean_error:.8e} (+/- {std_error:.8e})")
 
         print("-" * 50)
 
