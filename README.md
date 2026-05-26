@@ -211,7 +211,7 @@ Plots are saved to `dissertation/figures/`.
 ### Run the tests
 
 ```bash
-pytest tests/ -v
+python -m pytest tests/ -v
 ```
 
 The test suite covers all four layers of the project — physics, integration, diagnostics, and data validation.
