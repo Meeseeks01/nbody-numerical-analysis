@@ -204,12 +204,6 @@ python -m experiments.05_three_body_chaos
 
 Plots are saved to `dissertation/figures/`.
 
-### Open the interactive app
-
-```bash
-python -m streamlit run app/streamlit_app.py
-```
-
 ---
 
 ## Tests
@@ -238,6 +232,12 @@ The test suite covers all four layers of the project — physics, integration, d
 - The Lyapunov exponent for a stable two-body system comes back below 0.5, confirming the estimator doesn't flag stable orbits as chaotic.
 
 ---
+### Open the interactive app
+
+```bash
+python -m streamlit run app/streamlit_app.py
+```
+
 
 ## Interactive App
 
