@@ -58,7 +58,7 @@ A good simulation should keep the total energy of the system constant. This expe
 - **Euler** drifts steadily upward — the error just keeps growing
 - **RK4** drifts too, but much more slowly
 - **Leapfrog** bounces up and down but stays within a fixed range — it never runs away
-- **Yoshida** stays almost perfectly flat, right at the noise floor of floating-point arithmetic
+- **Yoshida** remains near the floating-point noise floor throughout the simulation, with only small fluctuations caused by finite-precision roundoff effects.
 
 ---
 
