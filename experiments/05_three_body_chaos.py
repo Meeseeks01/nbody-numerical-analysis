@@ -163,7 +163,7 @@ def execute_three_body_chaos_experiment():
     # Single unified legend placed cleanly outside the subplots
     fig.legend(
         loc="upper right",
-        bbox_to_anchor=(0.95, 0.90),
+        bbox_to_anchor=(0.97, 0.90),
         fontsize=11,
         frameon=True,
         shadow=True,
