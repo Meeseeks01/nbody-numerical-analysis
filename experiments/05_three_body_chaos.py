@@ -107,8 +107,8 @@ def execute_three_body_chaos_experiment():
                 history[b_idx, :, 0],
                 history[b_idx, :, 1],
                 color=body_colors[b_idx],
-                linewidth=1.5,
-                alpha=0.85,
+                linewidth=1.2,
+                alpha=0.75,
                 label=(
                     body_labels[b_idx] if idx == 0 else ""
                 ),  # Label only first to avoid legend duplication
@@ -120,7 +120,7 @@ def execute_three_body_chaos_experiment():
                 init_positions[b_idx][1],
                 marker="o",
                 color=body_colors[b_idx],
-                markersize=8,
+                markersize=7,
                 markerfacecolor="white",
                 markeredgewidth=2,
                 zorder=5,
@@ -135,18 +135,18 @@ def execute_three_body_chaos_experiment():
                     final_y,
                     marker="*",
                     color=body_colors[b_idx],
-                    markersize=10,
+                    markersize=9,
                     zorder=5,
                 )
 
         # Style individual subplots 
-        ax.set_title(name, fontsize=13, fontweight="bold", pad=10)
+        ax.set_title(name, fontsize=12, pad=12)
         ax.grid(True, which="both", linestyle=":", alpha=0.5)
-        ax.set_aspect("equal", adjustable="box")
+        ax.set_aspect("equal")
 
         # Fixed axis ranges for consistent comparison
-        ax.set_xlim(-5, 5)
-        ax.set_ylim(-5, 5)
+        ax.set_xlim(-18, 18)
+        ax.set_ylim(-18, 18)
 
     # Set outer bounding labels across shared grids
     for i in range(2):
@@ -155,22 +155,22 @@ def execute_three_body_chaos_experiment():
 
     total_simulated_time = dt * num_steps
     plt.suptitle(
-        f"Three-Body Trajectory Comparison Across Integrators ($T={total_simulated_time}$)",
+        f"Pythagorean Three-Body Trajectory Comparison Across Numerical Integrators ($T={total_simulated_time}$)",
         fontsize=16,
-        fontweight="bold",
         y=0.96,
     )
 
     # Single unified legend placed cleanly outside the subplots
     fig.legend(
         loc="upper right",
-        bbox_to_anchor=(0.98, 0.94),
+        bbox_to_anchor=(0.93, 0.91),
         fontsize=11,
         frameon=True,
         shadow=True,
     )
 
-    plt.tight_layout(rect=[0.02, 0.02, 0.85, 0.92])
+    plt.tight_layout(rect=[0.02, 0.02, 0.88, 0.92])
+    fig.subplots_adjust(hspace=0.35, wspace=0.25)
 
     # Created output directory
     output_dir = "dissertation/figures"
