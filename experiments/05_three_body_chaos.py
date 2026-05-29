@@ -163,7 +163,7 @@ def execute_three_body_chaos_experiment():
     # Single unified legend placed cleanly outside the subplots
     fig.legend(
         loc="upper right",
-        bbox_to_anchor=(0.93, 0.91),
+        bbox_to_anchor=(0.95, 0.90),
         fontsize=11,
         frameon=True,
         shadow=True,
@@ -177,7 +177,7 @@ def execute_three_body_chaos_experiment():
     os.makedirs(output_dir, exist_ok=True)
     save_path = os.path.join(output_dir, "three_body_chaos_trajectories.png")
 
-    plt.savefig(save_path, dpi=300)
+    plt.savefig(save_path, dpi=300, bbox_inches="tight")
     print(f"Figure saved to: {save_path}")
     plt.show()
 
