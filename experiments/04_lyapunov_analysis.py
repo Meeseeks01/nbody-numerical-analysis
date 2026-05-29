@@ -66,7 +66,7 @@ def execute_lyapunov_experiment():
             num_steps = int(total_time / dt)
 
             try:
-                # Direct call matching your internal Benettin architecture perfectly
+            
                 lambda_val = compute_lyapunov_exponent(
                     bodies=bodies,
                     integrator=int_func,
@@ -124,7 +124,7 @@ def execute_lyapunov_experiment():
         alpha=0.8,
     )
 
-    # Formatting headers and axes to match publication-quality layouts
+    
     ax.set_title(
         r"Comparison of Estimated Maximal Lyapunov Exponents ($\lambda$)",
         fontsize=14,
@@ -162,7 +162,7 @@ def execute_lyapunov_experiment():
 
     plt.tight_layout()
 
-    # Ensure directory exists before saving figure output
+    
     output_dir = "dissertation/figures"
     os.makedirs(output_dir, exist_ok=True)
     save_path = os.path.join(output_dir, "lyapunov_exponent_comparison.png")

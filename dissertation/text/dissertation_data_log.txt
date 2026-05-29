@@ -124,15 +124,15 @@ Integrator: Yoshida    | lambda = 0.017331
 ============================================================
 
 
+============================================================
 EXPERIMENT 05: THREE-BODY CHAOS TRAJECTORY COMPARISON
+============================================================
 Simulating trajectory using Explicit Euler...
 Integrator: Explicit Euler
 Status: COMPLETED
 Steps Completed: 2000 / 2000
 Body 1 Final Position: (14.2223, -4.0560)
---------------------------------------------------
 Body 2 Final Position: (-9.4425, 2.9788)
---------------------------------------------------
 Body 3 Final Position: (0.4207, 1.6505)
 --------------------------------------------------
 Simulating trajectory using Leapfrog (2nd-Order Symplectic)...
@@ -140,9 +140,7 @@ Integrator: Leapfrog (2nd-Order Symplectic)
 Status: COMPLETED
 Steps Completed: 2000 / 2000
 Body 1 Final Position: (5.2069, 4.1551)
---------------------------------------------------
 Body 2 Final Position: (-1.9792, -2.4850)
---------------------------------------------------
 Body 3 Final Position: (-0.1408, 1.0949)
 --------------------------------------------------
 Simulating trajectory using Runge-Kutta (RK4)...
@@ -150,9 +148,7 @@ Integrator: Runge-Kutta (RK4)
 Status: COMPLETED
 Steps Completed: 2000 / 2000
 Body 1 Final Position: (17.9248, -2.0572)
---------------------------------------------------
 Body 2 Final Position: (-12.0258, 1.9149)
---------------------------------------------------
 Body 3 Final Position: (0.2658, 1.3024)
 --------------------------------------------------
 Simulating trajectory using Yoshida (4th-Order Symplectic)...
@@ -160,9 +156,7 @@ Integrator: Yoshida (4th-Order Symplectic)
 Status: COMPLETED
 Steps Completed: 2000 / 2000
 Body 1 Final Position: (16.7039, -15.5853)
---------------------------------------------------
 Body 2 Final Position: (-16.6560, 7.8611)
---------------------------------------------------
 Body 3 Final Position: (4.7025, 4.6624)
 --------------------------------------------------
-
+Figure saved to: dissertation/figures\three_body_chaos_trajectories.png

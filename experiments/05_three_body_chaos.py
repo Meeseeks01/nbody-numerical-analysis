@@ -54,13 +54,17 @@ def generate_trajectories(integrator_func, dt, num_steps, name):
         fx = history[b_idx, failure_step if termination_status == "FAILED" else -1, 0]
         fy = history[b_idx, failure_step if termination_status == "FAILED" else -1, 1]
         print(f"Body {b_idx+1} Final Position: ({fx:.4f}, {fy:.4f})")
-        print("-" * 50)
+        
+    print("-" * 50)
 
     return history
 
 
 def execute_three_body_chaos_experiment():
+    #--------------------------------------------------------------------------
+    print("\n" + "=" * 60)
     print("EXPERIMENT 05: THREE-BODY CHAOS TRAJECTORY COMPARISON")
+    print("=" * 60)
 
     # Define strict parameters to preserve close encounter integrity
     dt = 0.001
@@ -135,7 +139,7 @@ def execute_three_body_chaos_experiment():
                     zorder=5,
                 )
 
-        # Style individual subplots for consistency and professional aesthetics
+        # Style individual subplots 
         ax.set_title(name, fontsize=13, fontweight="bold", pad=10)
         ax.grid(True, which="both", linestyle=":", alpha=0.5)
         ax.set_aspect("equal", adjustable="box")
@@ -168,7 +172,7 @@ def execute_three_body_chaos_experiment():
 
     plt.tight_layout(rect=[0.02, 0.02, 0.85, 0.92])
 
-    # Created output directory if needed
+    # Created output directory
     output_dir = "dissertation/figures"
     os.makedirs(output_dir, exist_ok=True)
     save_path = os.path.join(output_dir, "three_body_chaos_trajectories.png")
