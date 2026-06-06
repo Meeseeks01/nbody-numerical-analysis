@@ -12,6 +12,9 @@ from src.utils.initial_conditions import make_two_body_circular
 
 
 def run_simulation(name, integrator, steps=1000, dt=0.01):
+    """
+    Evolve the circular two-body system and record relative energy error over time.
+    """
 
     bodies = make_two_body_circular()
     initial_energy = compute_total_energy(bodies)
@@ -81,7 +84,6 @@ def main():
 
     print("=" * 60 + "\n")
 
-    # Plot Styling modifications for Academic Publication
     plt.xlabel("Time (dimensionless)", fontsize=12)
     plt.ylabel("Relative Energy Error (log scale)", fontsize=12)
     plt.title("Energy Drift Comparison Across Integrators", fontsize=14, pad=20)

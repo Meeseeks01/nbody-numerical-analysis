@@ -37,15 +37,15 @@ def yoshida_integrator(bodies, dt):
     w0 = -(2.0 ** (1.0 / 3.0)) * w1
 
     # c1, c2, c3, c4 are the position update coefficients
-    c1 = w1 / 2  # 0.6756035959798289
-    c2 = (w0 + w1) / 2  # -0.1756035959798288
-    c3 = c2  # -0.1756035959798288
-    c4 = c1  # 0.6756035959798289
+    c1 = w1 / 2  
+    c2 = (w0 + w1) / 2  
+    c3 = c2  
+    c4 = c1  
 
     # d1, d2, d3 are the velocity update coefficients
-    d1 = w1  # 1.3512071919596578
-    d2 = w0  # -1.7024143839193156
-    d3 = w1  # 1.3512071919596578
+    d1 = w1  
+    d2 = w0  
+    d3 = w1  
 
     # --- Stage 1: Drift ---
     for body in bodies:

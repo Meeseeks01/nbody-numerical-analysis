@@ -4,11 +4,11 @@ from src.physics.system import compute_accelerations
 def euler_integrator(bodies, dt):
     """
     Perform a single Euler integration step.
-    Implements the standard Euler method :
+    Implements the Explicit Euler method :
     r(t + dt) = r(t) + v(t) * dt
     v(t + dt) = v(t) + a(t) * dt
     where r is position, v is velocity, a is acceleration, and dt is the time step.
-    First-order method, O(dt) accuracy, not symplectic, can lead to energy drift over time.
+    First-order method, with global error O(dt) accuracy, not symplectic, can lead to energy drift over time.
 
     Parameters
     ----------

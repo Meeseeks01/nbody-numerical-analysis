@@ -21,7 +21,7 @@ def execute_lyapunov_experiment():
     """
     print("Running Experiment 04: Lyapunov Analysis")
 
-    # 1. Setup step-based parameters matching your core function constraints
+    # Simulation parameters
     dt = 0.001
     total_time = 1000.0
     num_steps = int(total_time / dt)  # Convert total_time to steps required
@@ -58,7 +58,6 @@ def execute_lyapunov_experiment():
             print(f"  > Running {int_name} on {sys_name}...")
 
             # Generate a fresh initial condition list of bodies for every single test
-            # bodies = init_func()
             bodies = system_config["factory"]()
             total_time = system_config["total_time"]
             renormalization_steps = system_config["renormalization_steps"]

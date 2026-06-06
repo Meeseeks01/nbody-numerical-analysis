@@ -9,6 +9,9 @@ from src.utils.initial_conditions import make_two_body_circular
 
 
 def run_simulation(integrator, steps=1000, dt=0.01):
+    """
+    Evolve the circular two-body system and record body positions over time.
+    """
     bodies = make_two_body_circular()
     positions = []
 

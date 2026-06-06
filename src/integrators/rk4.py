@@ -6,7 +6,7 @@ def rk4_integrator(bodies, dt):
     """
     Perform a single Runge-Kutta 4th order (RK4) integration step.
     RK4 is a higher-order method that provides better accuracy than Euler's method.
-    It calculates intermediate slopes to achieve O(dt^4) accuracy, making it more suitable for long-term simulations.
+    It evaluates intermediate slopes with local truncation error O(dt^5) and global error O(dt^4).
 
     Parameters
     ----------
