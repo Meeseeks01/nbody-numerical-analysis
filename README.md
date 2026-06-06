@@ -182,7 +182,7 @@ One of the strongest choices for long-term Hamiltonian simulations. Reference: Y
 ## Installation
 
 ```bash
-git clone https://github.com/yourusername/nbody-numerical-analysis.git
+git clone https://github.com/Meeseeks01/nbody-numerical-analysis.git
 cd nbody-numerical-analysis
 pip install -r requirements.txt
 ```
