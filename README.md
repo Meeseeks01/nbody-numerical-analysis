@@ -187,7 +187,7 @@ cd nbody-numerical-analysis
 pip install -r requirements.txt
 ```
 
-**Requires:** `numpy`, `matplotlib`, `scipy`, `pytest`, `streamlit`
+**Requires:** `numpy`, `matplotlib`, `pytest`, `streamlit`
 
 ---
 
@@ -279,7 +279,7 @@ The Lyapunov tab shows a bar chart comparing the estimated chaos score (λ) for 
 
 ## Technologies
 
-`Python 3.9+` · `NumPy` · `Matplotlib` · `SciPy` · `Streamlit` · `pytest`
+`Python 3.9+` · `NumPy` · `Matplotlib` · `Streamlit` · `pytest`
 
 ---
 
