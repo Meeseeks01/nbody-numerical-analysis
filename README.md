@@ -4,7 +4,7 @@
 
 **A project exploring how the choice of numerical integration affects the accuracy and stability of gravity simulations.**
 
-[![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![Python](https://img.shields.io/badge/Python-3%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
 [![NumPy](https://img.shields.io/badge/NumPy-Scientific%20Computing-013243?style=flat-square&logo=numpy)](https://numpy.org)
 [![Streamlit](https://img.shields.io/badge/Streamlit-Interactive%20UI-FF4B4B?style=flat-square&logo=streamlit&logoColor=white)](https://streamlit.io)
 [![pytest](https://img.shields.io/badge/pytest-Tested-0A9EDC?style=flat-square&logo=pytest&logoColor=white)](https://pytest.org)
@@ -279,7 +279,7 @@ The Lyapunov tab shows a bar chart comparing the estimated chaos score (λ) for 
 
 ## Technologies
 
-`Python 3.9+` · `NumPy` · `Matplotlib` · `Streamlit` · `pytest`
+`Python 3` · `NumPy` · `Matplotlib` · `Streamlit` · `pytest`
 
 ---
 
