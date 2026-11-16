@@ -81,3 +81,6 @@ def yoshida_integrator(bodies, dt):
 
     for body in bodies:
         body.position += c4 * body.velocity * dt
+
+
+#FIX the maintenance, at the moment the code has repetition
